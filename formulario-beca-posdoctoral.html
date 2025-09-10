@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario - APOYOS PARA ESTANCIAS POSDOCTORALES</title>
+    <!-- Incluyendo Tailwind CSS para el estilo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* Fondo blanco para todo el cuerpo */
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #e5e7eb;
+            font-weight: 600;
+            white-space: nowrap; /* Evita que el texto de la cabecera se envuelva */
+        }
+        td {
+            white-space: nowrap;
+        }
+        /* Estilo para los checkboxes del cronograma */
+        .cronograma-check {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white shadow-xl rounded-lg p-8 max-w-4xl w-full">
+        <!-- Título de la Convocatoria -->
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">APOYOS PARA ESTANCIAS POSDOCTORALES EN LA PUCP – EDICIÓN 2025</h1>
+        
+        <!-- Descripción del postulante -->
+        <p class="text-center text-gray-600 mb-8">El postulante debe ser el supervisor de la estancia (docente PUCP) que cumpla con los requisitos de la convocatoria.</p>
+
+        <form id="solicitudForm">
+            <!-- Sección de validación del código PUCP -->
+            <div class="bg-blue-50 p-6 rounded-md mb-6 border border-blue-200">
+                <h2 class="text-xl font-semibold text-blue-800 mb-4">Validación de Requisitos del Supervisor</h2>
+                <div class="mb-4">
+                    <label for="codigo_pucp" class="block text-gray-700 font-medium mb-2">Código PUCP del docente</label>
+                    <input type="text" id="codigo_pucp" name="codigo_pucp" placeholder="Ej. 12345" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button type="button" id="validarBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                    Validar Código y Cargar Datos
+                </button>
+            </div>
+
+            <!-- Sección de información del supervisor (se mostrará después de la validación) -->
+            <div id="infoDocente" class="hidden bg-gray-100 p-6 rounded-md mb-6 border border-gray-300">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Información del Supervisor</h2>
+                <div id="resultadoValidacion" class="text-red-500 font-semibold mb-4"></div>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-gray-200 p-4 rounded-md">
+                        <label class="block text-gray-700 font-medium">Nombre Completo:</label>
+                        <p id="nombreCompleto" class="text-gray-900 mt-1"></p>
+                    </div>
+                     <div class="bg-gray-200 p-4 rounded-md">
+                        <label class="block text-gray-700 font-medium">Número de Celular:</label>
+                        <p id="celular" class="text-gray-900 mt-1"></p>
+                    </div>
+                     <div class="bg-gray-200 p-4 rounded-md">
+                        <label class="block text-gray-700 font-medium">Correo PUCP:</label>
+                        <p id="correoPucp" class="text-gray-900 mt-1"></p>
+                    </div>
+                    <div class="bg-gray-200 p-4 rounded-md">
+                        <label class="block text-gray-700 font-medium">Categoría:</label>
+                        <p id="categoria" class="text-gray-900 mt-1"></p>
+                    </div>
+                    <div class="bg-gray-200 p-4 rounded-md">
+                        <label class="block text-gray-700 font-medium">Grado Académico:</label>
+                        <p id="gradoAcademico" class="text-gray-900 mt-1"></p>
+                    </div>
+                    <div class="bg-gray-200 p-4 rounded-md">
+                        <label class="block text-gray-700 font-medium">Dedicación:</label>
+                        <p id="dedicacion" class="text-gray-900 mt-1"></p>
+                    </div>
+                </div>
+                 <div class="mt-4">
+                    <label for="afiliacion" class="block text-gray-700 font-medium mb-2">Grupo, Centro o Instituto:</label>
+                    <select id="afiliacion" name="afiliacion" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- Seleccionar --</option>
+                        <option value="GRIA">Grupo de Investigación en Inteligencia Artificial (GRIA)</option>
+                        <option value="CIUP">Centro de Investigación de la Universidad del Pacífico (CIUP)</option>
+                        <option value="Instituto de la Naturaleza">Instituto de la Naturaleza, Tierra y Energía (INTE)</option>
+                        <option value="Departamento de Ciencias">Departamento Académico de Ciencias</option>
+                        <option value="IDEHPUCP">Instituto de Democracia y Derechos Humanos (IDEHPUCP)</option>
+                    </select>
+                </div>
+                <div class="mt-4">
+                    <label for="rol_supervisor" class="block text-gray-700 font-medium mb-2">Rol del supervisor</label>
+                    <select id="rol_supervisor" name="rol_supervisor" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- Seleccionar --</option>
+                        <option value="coordinador">Coordinador(a)</option>
+                        <option value="director">Director(a)</option>
+                        <option value="miembro">Miembro</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sección de adjuntar archivos del supervisor -->
+            <div id="seccionAdjuntosSupervisor" class="hidden bg-gray-100 p-6 rounded-md mb-6 border border-gray-300">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Adjuntar Documentos del Supervisor</h2>
+                <div class="mb-4">
+                    <label for="cv" class="block text-gray-700 font-medium mb-2">CV (Curriculum en PDF)</label>
+                    <input type="file" id="cv" name="cv" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="carta_justificacion" class="block text-gray-700 font-medium mb-2">Carta de justificación</label>
+                    <input type="file" id="carta_justificacion" name="carta_justificacion" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="carta_aval" class="block text-gray-700 font-medium mb-2">Carta aval</label>
+                    <input type="file" id="carta_aval" name="carta_aval" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <!-- Sección de publicaciones del supervisor (nueva) -->
+            <div id="publicacionesSupervisor" class="hidden bg-gray-100 p-6 rounded-md mb-6 border border-gray-300">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Publicaciones del Supervisor</h2>
+                <p class="text-sm text-gray-500 mb-4">Esta información será utilizada para la calificación del supervisor. Favor de ingresar todas las publicaciones relevantes.</p>
+                
+                <div class="table-container">
+                    <table id="publicacionesSupervisorTable" class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th>Nombre de la Publicación</th>
+                                <th>Revista de Publicación</th>
+                                <th>DOI</th>
+                                <th></th> <!-- Columna para el botón de eliminar -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Las filas se agregarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" id="addSupervisorRowBtn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                    Añadir Publicación
+                </button>
+            </div>
+
+            <!-- Sección de información del solicitante de la beca -->
+            <div id="infoSolicitante" class="hidden bg-gray-100 p-6 rounded-md mb-6 border border-gray-300">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Información del Solicitante de la Beca</h2>
+                
+                <h3 class="text-lg font-semibold text-gray-600 mb-3">Datos Personales</h3>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="nombres_apellidos" class="block text-gray-700 font-medium mb-2">Nombre y Apellidos <span class="text-xs text-gray-500">(Ej. Nombres Apellidos)</span></label>
+                        <input type="text" id="nombres_apellidos" name="nombres_apellidos" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="correo_solicitante" class="block text-gray-700 font-medium mb-2">Correo Electrónico</label>
+                        <input type="email" id="correo_solicitante" name="correo_solicitante" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="fecha_nacimiento" class="block text-gray-700 font-medium mb-2">Fecha de Nacimiento</label>
+                        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Sexo</label>
+                        <div class="flex items-center space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="sexo" value="masculino" class="form-radio text-blue-600">
+                                <span class="ml-2 text-gray-700">Masculino</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="sexo" value="femenino" class="form-radio text-blue-600">
+                                <span class="ml-2 text-gray-700">Femenino</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 font-medium mb-2">Teléfono</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" id="codigo_pais" name="codigo_pais" placeholder="Cód. País (+51)" class="w-1/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="tel" id="telefono" name="telefono" placeholder="Número telefónico" class="w-2/3 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="tipo_documento" class="block text-gray-700 font-medium mb-2">Tipo de Documento de Identidad</label>
+                        <select id="tipo_documento" name="tipo_documento" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="pasaporte">Pasaporte</option>
+                            <option value="dni">DNI</option>
+                            <option value="residencia">Documento de país de residencia</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="numero_documento" class="block text-gray-700 font-medium mb-2">Número de Documento</label>
+                        <input type="text" id="numero_documento" name="numero_documento" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="nacionalidad" class="block text-gray-700 font-medium mb-2">Nacionalidad</label>
+                        <select id="nacionalidad" name="nacionalidad" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="peruana">Peruana</option>
+                            <option value="colombiana">Colombiana</option>
+                            <option value="mexicana">Mexicana</option>
+                            <option value="otra">Otra</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="pais_residencia" class="block text-gray-700 font-medium mb-2">País de Residencia Actual</label>
+                        <select id="pais_residencia" name="pais_residencia" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="peru">Perú</option>
+                            <option value="colombia">Colombia</option>
+                            <option value="mexico">México</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 font-medium mb-2">¿El solicitante de la beca ha pertenecido a la PUCP?</label>
+                        <div class="flex items-center space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="pucp_pertenencia" value="si" class="form-radio text-blue-600">
+                                <span class="ml-2 text-gray-700">Sí</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="pucp_pertenencia" value="no" class="form-radio text-blue-600">
+                                <span class="ml-2 text-gray-700">No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="codigo_pucp_solicitante_container" class="md:col-span-2 hidden">
+                        <label for="codigo_pucp_solicitante" class="block text-gray-700 font-medium mb-2">Código PUCP del solicitante</label>
+                        <input type="text" id="codigo_pucp_solicitante" name="codigo_pucp_solicitante" placeholder="8 caracteres (números o letras)" maxlength="8" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <p id="codigo_pucp_solicitante_error" class="text-xs text-red-500 mt-1 hidden">El código debe tener exactamente 8 caracteres.</p>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-semibold text-gray-600 mb-3 mt-6">Datos Academicos</h3>
+                <div class="mb-4">
+                    <label for="diploma" class="block text-gray-700 font-medium mb-2">Adjuntar Diploma de Grado</label>
+                    <input type="file" id="diploma" name="diploma" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="anio_grado" class="block text-gray-700 font-medium mb-2">Año en que obtuvo el grado de Doctor</label>
+                        <input type="number" id="anio_grado" name="anio_grado" min="1950" max="2025" placeholder="YYYY" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <p class="text-xs text-red-500 mt-1">El grado debe haber sido obtenido en los últimos 5 años (máximo 2020).</p>
+                    </div>
+                     <div>
+                        <label for="institucion_grado" class="block text-gray-700 font-medium mb-2">Institución donde obtuvo el grado de Doctor</label>
+                        <input type="text" id="institucion_grado" name="institucion_grado" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                     <div>
+                        <label for="pais_institucion_grado" class="block text-gray-700 font-medium mb-2">País de la Institución del Grado</label>
+                         <select id="pais_institucion_grado" name="pais_institucion_grado" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="peru">Perú</option>
+                            <option value="colombia">Colombia</option>
+                            <option value="mexico">México</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="institucion_procedencia" class="block text-gray-700 font-medium mb-2">Institución de Procedencia</label>
+                        <input type="text" id="institucion_procedencia" name="institucion_procedencia" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <p class="text-xs text-gray-500 mt-1">Institución actual donde labora o tiene vínculo.</p>
+                    </div>
+                    <div>
+                        <label for="pais_institucion_procedencia" class="block text-gray-700 font-medium mb-2">País de la Institución de Procedencia</label>
+                         <select id="pais_institucion_procedencia" name="pais_institucion_procedencia" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="peru">Perú</option>
+                            <option value="colombia">Colombia</option>
+                            <option value="mexico">México</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-semibold text-gray-600 mb-3 mt-6">Publicaciones del Solicitante</h3>
+                <p class="text-sm text-gray-500 mb-4">Esta información será utilizada para la calificación del solicitante. Favor de ingresar todas las publicaciones relevantes.</p>
+                
+                <div class="table-container">
+                    <table id="publicacionesTable" class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Tipo de Publicación</th>
+                                <th>DOI</th>
+                                <th>ISSN</th>
+                                <th>ISBN</th>
+                                <th>Evidencia / Link</th>
+                                <th></th> <!-- Columna para el botón de eliminar -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Las filas se agregarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" id="addRowBtn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                    Añadir Publicación
+                </button>
+
+                 <h3 class="text-lg font-semibold text-gray-600 mb-3 mt-6">Adjuntar Documentos del Solicitante</h3>
+                <div class="mb-4">
+                    <label for="carta_compromiso" class="block text-gray-700 font-medium mb-2">Carta de Compromiso</label>
+                    <input type="file" id="carta_compromiso" name="carta_compromiso" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="carta_recomendacion_1" class="block text-gray-700 font-medium mb-2">Primera Carta de Recomendación</label>
+                    <input type="file" id="carta_recomendacion_1" name="carta_recomendacion_1" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="carta_recomendacion_2" class="block text-gray-700 font-medium mb-2">Segunda Carta de Recomendación</label>
+                    <input type="file" id="carta_recomendacion_2" name="carta_recomendacion_2" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="declaracion_etica" class="block text-gray-700 font-medium mb-2">Declaración Ética</label>
+                    <input type="file" id="declaracion_etica" name="declaracion_etica" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+            
+            <!-- Sección de información del proyecto (nueva) -->
+            <div id="infoProyecto" class="hidden bg-gray-100 p-6 rounded-md mb-6 border border-gray-300">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Información del Proyecto</h2>
+                <div class="mb-4">
+                    <label for="nombre_proyecto" class="block text-gray-700 font-medium mb-2">Nombre del Proyecto</label>
+                    <input type="text" id="nombre_proyecto" name="nombre_proyecto" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Tipo de Proyecto</label>
+                    <div class="flex items-center space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="tipo_proyecto" value="investigacion" class="form-radio text-blue-600">
+                            <span class="ml-2 text-gray-700">Proyecto de investigación</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="tipo_proyecto" value="investigacion-creacion" class="form-radio text-blue-600">
+                            <span class="ml-2 text-gray-700">Proyecto de investigación-creación</span>
+                        </label>
+                    </div>
+                     <p class="text-xs text-gray-500 mt-2">El proyecto debe ser original y no un proyecto en curso.</p>
+                </div>
+                
+                <!-- Sección para adjuntar la propuesta PDF -->
+                <div class="mb-4">
+                    <label for="propuesta_pdf" class="block text-gray-700 font-medium mb-2">Adjuntar Propuesta (PDF)</label>
+                    <input type="file" id="propuesta_pdf" name="propuesta_pdf" accept="application/pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Duración del proyecto -->
+                <div class="mb-4">
+                    <label for="duracion_proyecto_meses" class="block text-gray-700 font-medium mb-2">Duración del Proyecto</label>
+                    <select id="duracion_proyecto_meses" name="duracion_proyecto_meses" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- Seleccionar duración (meses) --</option>
+                        <option value="18">18 meses</option>
+                        <option value="19">19 meses</option>
+                        <option value="20">20 meses</option>
+                        <option value="21">21 meses</option>
+                        <option value="22">22 meses</option>
+                        <option value="23">23 meses</option>
+                        <option value="24">24 meses</option>
+                    </select>
+                </div>
+                
+                <!-- Cronograma de Actividades (Dinámico) -->
+                <div id="cronograma_proyecto_container" class="hidden mt-6">
+                    <h3 class="text-lg font-semibold text-gray-600 mb-3">Cronograma de Actividades</h3>
+                    <p class="text-sm text-gray-500 mb-4">Marque con un visto el(los) mes(es) en que se realizará la actividad.</p>
+                    <div class="table-container">
+                        <table id="cronogramaTable" class="min-w-full">
+                            <thead>
+                                <!-- Las cabeceras se generarán dinámicamente con JavaScript -->
+                            </thead>
+                            <tbody>
+                                <!-- Las filas se agregarán dinámicamente aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" id="addActividadBtn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                        Añadir Actividad
+                    </button>
+                </div>
+
+                <!-- Tabla del Plan Operativo / Presupuesto (nueva) -->
+                <div id="presupuesto_proyecto_container" class="hidden mt-6">
+                    <h3 class="text-lg font-semibold text-gray-600 mb-3">Plan Operativo / Presupuesto</h3>
+                    <div class="table-container">
+                        <table id="presupuestoTable" class="min-w-full">
+                            <thead>
+                                <!-- Las cabeceras se generarán dinámicamente con JavaScript -->
+                            </thead>
+                            <tbody>
+                                <!-- Las filas se agregarán dinámicamente aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" id="addPresupuestoBtn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                        Añadir Rubro
+                    </button>
+                    
+                    <!-- Monto total solicitado -->
+                    <div class="bg-blue-100 p-4 rounded-md mt-6 flex items-center justify-between">
+                        <span class="text-blue-800 font-semibold text-lg">Monto solicitado:</span>
+                        <span id="montoSolicitado" class="text-blue-900 font-bold text-xl">S/ 0.00</span>
+                    </div>
+                </div>
+                
+                <!-- Objetivo General -->
+                <h3 class="text-lg font-semibold text-gray-600 mb-3 mt-6">Objetivo General</h3>
+                <div class="mb-4">
+                    <textarea id="objetivo_general" name="objetivo_general" rows="4" placeholder="Escribe aquí el objetivo general de tu proyecto..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+
+                <!-- Objetivos Específicos -->
+                <h3 class="text-lg font-semibold text-gray-600 mb-3 mt-6">Objetivos Específicos</h3>
+                <div id="objetivos_especificos_container" class="space-y-2 mb-4">
+                    <!-- Aquí se añadirán los objetivos específicos dinámicamente -->
+                </div>
+                <button type="button" id="addObjetivoBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                    Añadir Objetivo Específico
+                </button>
+
+                <!-- Tabla de Productos -->
+                <h3 class="text-lg font-semibold text-gray-600 mb-3 mt-6">Productos del Proyecto</h3>
+                <div class="table-container">
+                    <table id="productosTable" class="min-w-full">
+                        <thead>
+                            <tr>
+                                <th>Objetivo específico relacionado al producto</th>
+                                <th>Tipo de producto</th>
+                                <th>Cantidad</th>
+                                <th></th> <!-- Columna para el botón de eliminar -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Las filas se agregarán dinámicamente aquí -->
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" id="addProductoBtn" class="mt-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-md transition-colors duration-300">
+                    Añadir Producto
+                </button>
+
+                <!-- Financiamiento externo -->
+                <div class="mb-4 mt-6">
+                    <label class="block text-gray-700 font-medium mb-2">¿El proyecto tiene una institución externa que lo financia?</label>
+                    <div class="flex items-center space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="financiacion_externa" value="si" class="form-radio text-blue-600">
+                            <span class="ml-2 text-gray-700">Sí</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="financiacion_externa" value="no" class="form-radio text-blue-600">
+                            <span class="ml-2 text-gray-700">No</span>
+                        </label>
+                    </div>
+                </div>
+                <div id="financiamiento_container" class="hidden grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="institucion_financia" class="block text-gray-700 font-medium mb-2">Institución que financia</label>
+                        <input type="text" id="institucion_financia" name="institucion_financia" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="institucion_gestiona" class="block text-gray-700 font-medium mb-2">Institución que gestiona el fondo</label>
+                        <input type="text" id="institucion_gestiona" name="institucion_gestiona" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="monto_financiamiento" class="block text-gray-700 font-medium mb-2">Monto de financiamiento completo</label>
+                        <input type="number" id="monto_financiamiento" name="monto_financiamiento" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label for="tipo_moneda" class="block text-gray-700 font-medium mb-2">Tipo de moneda</label>
+                        <select id="tipo_moneda" name="tipo_moneda" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="usd">Dólares Americanos (USD)</option>
+                            <option value="eur">Euros (EUR)</option>
+                            <option value="pen">Soles Peruanos (PEN)</option>
+                            <option value="mxn">Pesos Mexicanos (MXN)</option>
+                            <option value="cop">Pesos Colombianos (COP)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="enviarBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-md transition-colors duration-300 mt-4 hidden">
+                Enviar Solicitud
+            </button>
+        </form>
+
+        <!-- Mensaje de éxito -->
+        <div id="mensajeExito" class="hidden text-center bg-green-100 text-green-700 border border-green-300 rounded-md p-4 mt-6">
+            <p class="font-semibold">¡El formulario se ha enviado correctamente!</p>
+            <p>Este es solo un prototipo. La información no ha sido enviada a ninguna base de datos.</p>
+        </div>
+    </div>
+
+    <script>
+        const validarBtn = document.getElementById('validarBtn');
+        const codigoInput = document.getElementById('codigo_pucp');
+        const infoDocenteDiv = document.getElementById('infoDocente');
+        const seccionAdjuntosSupervisorDiv = document.getElementById('seccionAdjuntosSupervisor');
+        const publicacionesSupervisorDiv = document.getElementById('publicacionesSupervisor');
+        const infoSolicitanteDiv = document.getElementById('infoSolicitante');
+        const infoProyectoDiv = document.getElementById('infoProyecto');
+        const resultadoValidacionP = document.getElementById('resultadoValidacion');
+        const enviarBtn = document.getElementById('enviarBtn');
+        const solicitudForm = document.getElementById('solicitudForm');
+        const mensajeExitoDiv = document.getElementById('mensajeExito');
+        const addRowBtn = document.getElementById('addRowBtn');
+        const publicacionesTableBody = document.querySelector('#publicacionesTable tbody');
+        const addSupervisorRowBtn = document.getElementById('addSupervisorRowBtn');
+        const publicacionesSupervisorTableBody = document.querySelector('#publicacionesSupervisorTable tbody');
+
+        const pucpPertenenciaRadios = document.getElementsByName('pucp_pertenencia');
+        const codigoPucpSolicitanteContainer = document.getElementById('codigo_pucp_solicitante_container');
+        const codigoPucpSolicitanteInput = document.getElementById('codigo_pucp_solicitante');
+        const codigoPucpSolicitanteError = document.getElementById('codigo_pucp_solicitante_error');
+
+        const financiacionExternaRadios = document.getElementsByName('financiacion_externa');
+        const financiamientoContainer = document.getElementById('financiamiento_container');
+
+        const addObjetivoBtn = document.getElementById('addObjetivoBtn');
+        const objetivosContainer = document.getElementById('objetivos_especificos_container');
+
+        const addProductoBtn = document.getElementById('addProductoBtn');
+        const productosTableBody = document.querySelector('#productosTable tbody');
+        
+        // Cronograma
+        const duracionProyectoSelect = document.getElementById('duracion_proyecto_meses');
+        const cronogramaContainer = document.getElementById('cronograma_proyecto_container');
+        const cronogramaTableHead = document.querySelector('#cronogramaTable thead');
+        const cronogramaTableBody = document.querySelector('#cronogramaTable tbody');
+        const addActividadBtn = document.getElementById('addActividadBtn');
+
+        // Presupuesto (Nuevas constantes)
+        const presupuestoContainer = document.getElementById('presupuesto_proyecto_container');
+        const presupuestoTableHead = document.querySelector('#presupuestoTable thead');
+        const presupuestoTableBody = document.querySelector('#presupuestoTable tbody');
+        const addPresupuestoBtn = document.getElementById('addPresupuestoBtn');
+        const montoSolicitadoSpan = document.getElementById('montoSolicitado');
+
+        validarBtn.addEventListener('click', () => {
+            const codigo = codigoInput.value.trim();
+            resultadoValidacionP.textContent = '';
+            infoDocenteDiv.classList.add('hidden');
+            seccionAdjuntosSupervisorDiv.classList.add('hidden');
+            publicacionesSupervisorDiv.classList.add('hidden');
+            infoSolicitanteDiv.classList.add('hidden');
+            infoProyectoDiv.classList.add('hidden');
+            enviarBtn.classList.add('hidden');
+
+            if (codigo === '12345') {
+                // Simulación de datos que cumplen con los requisitos
+                document.getElementById('nombreCompleto').textContent = 'Juan Pérez';
+                document.getElementById('celular').textContent = '999-888-777';
+                document.getElementById('correoPucp').textContent = 'jperez@pucp.edu.pe';
+                document.getElementById('categoria').textContent = 'Ordinario';
+                document.getElementById('gradoAcademico').textContent = 'Doctor';
+                document.getElementById('dedicacion').textContent = 'TPC (Tiempo Completo)';
+                
+                infoDocenteDiv.classList.remove('hidden');
+                seccionAdjuntosSupervisorDiv.classList.remove('hidden');
+                publicacionesSupervisorDiv.classList.remove('hidden');
+                infoSolicitanteDiv.classList.remove('hidden');
+                infoProyectoDiv.classList.remove('hidden');
+                enviarBtn.classList.remove('hidden');
+            } else {
+                // Simulación de un código que no cumple
+                infoDocenteDiv.classList.remove('hidden');
+                resultadoValidacionP.textContent = 'El código ingresado no cumple con los requisitos para postular a esta convocatoria.';
+                
+                // Ocultar las secciones de archivos y botón de envío
+                seccionAdjuntosSupervisorDiv.classList.add('hidden');
+                publicacionesSupervisorDiv.classList.add('hidden');
+                infoSolicitanteDiv.classList.add('hidden');
+                infoProyectoDiv.classList.add('hidden');
+                enviarBtn.classList.add('hidden');
+            }
+        });
+
+        // Lógica para mostrar/ocultar el campo de código PUCP del solicitante
+        pucpPertenenciaRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'si') {
+                    codigoPucpSolicitanteContainer.classList.remove('hidden');
+                } else {
+                    codigoPucpSolicitanteContainer.classList.add('hidden');
+                }
+            });
+        });
+
+        // Lógica para validar el código PUCP del solicitante
+        codigoPucpSolicitanteInput.addEventListener('keyup', () => {
+            const codigo = codigoPucpSolicitanteInput.value;
+            if (codigo.length !== 8) {
+                codigoPucpSolicitanteError.classList.remove('hidden');
+            } else {
+                codigoPucpSolicitanteError.classList.add('hidden');
+            }
+        });
+
+        // Lógica para mostrar/ocultar el contenedor de financiamiento externo
+        financiacionExternaRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'si') {
+                    financiamientoContainer.classList.remove('hidden');
+                } else {
+                    financiamientoContainer.classList.add('hidden');
+                }
+            });
+        });
+
+        // Función para agregar una fila a la tabla de publicaciones del solicitante
+        const addPublicationRow = () => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" name="publicacionTitulo[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="publicacionTipo[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="publicacionDoi[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="publicacionIssn[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="publicacionIsbn[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="publicacionLink[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><button type="button" class="remove-row-btn text-red-500 hover:text-red-700 font-bold">Eliminar</button></td>
+            `;
+            publicacionesTableBody.appendChild(newRow);
+        };
+
+        // Función para agregar una fila a la tabla de publicaciones del supervisor
+        const addSupervisorPublicationRow = () => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" name="publicacionSupervisorNombre[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="publicacionSupervisorRevista[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="publicacionSupervisorDoi[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><button type="button" class="remove-row-btn text-red-500 hover:text-red-700 font-bold">Eliminar</button></td>
+            `;
+            publicacionesSupervisorTableBody.appendChild(newRow);
+        };
+
+        // Evento para el botón de añadir fila en la tabla de publicaciones del solicitante
+        addRowBtn.addEventListener('click', addPublicationRow);
+
+        // Evento para el botón de añadir fila en la tabla de publicaciones del supervisor
+        addSupervisorRowBtn.addEventListener('click', addSupervisorPublicationRow);
+
+        // Evento para los botones de eliminar fila (usa delegación de eventos) para ambas tablas
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-row-btn')) {
+                e.target.closest('tr').remove();
+            }
+        });
+
+        // Función para actualizar las opciones de los select de productos
+        const updateProductoOptions = () => {
+            const objetivos = Array.from(objetivosContainer.querySelectorAll('input')).map(input => input.value);
+            const selectElements = document.querySelectorAll('.objetivo-select');
+
+            selectElements.forEach(select => {
+                const currentValue = select.value;
+                select.innerHTML = '';
+                // Añadir una opción por defecto
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '-- Seleccionar --';
+                select.appendChild(defaultOption);
+
+                objetivos.forEach((obj, index) => {
+                    if (obj.trim() !== '') {
+                        const option = document.createElement('option');
+                        option.value = `objetivo-${index}`;
+                        option.textContent = obj;
+                        select.appendChild(option);
+                    }
+                });
+
+                // Mantener el valor seleccionado si es posible
+                if (Array.from(select.options).some(option => option.value === currentValue)) {
+                    select.value = currentValue;
+                }
+            });
+        };
+
+        // Función para añadir una fila a la tabla de objetivos específicos
+        addObjetivoBtn.addEventListener('click', () => {
+            const newDiv = document.createElement('div');
+            newDiv.classList.add('flex', 'space-x-2', 'items-center');
+            newDiv.innerHTML = `
+                <input type="text" name="objetivos_especificos[]" placeholder="Escribe un objetivo específico" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 objetivo-input">
+                <button type="button" class="remove-objetivo-btn text-red-500 hover:text-red-700 font-bold px-2">Eliminar</button>
+            `;
+            objetivosContainer.appendChild(newDiv);
+            updateProductoOptions(); // Actualizar las opciones al añadir un nuevo objetivo
+        });
+
+        // Evento para los botones de eliminar fila de objetivos específicos
+        objetivosContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-objetivo-btn')) {
+                e.target.closest('div').remove();
+                updateProductoOptions(); // Actualizar las opciones al eliminar un objetivo
+            }
+        });
+
+        // Evento para actualizar las opciones cuando se escribe en un objetivo específico
+        objetivosContainer.addEventListener('input', updateProductoOptions);
+
+        // Función para agregar una fila a la tabla de productos
+        addProductoBtn.addEventListener('click', () => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>
+                    <select name="producto_objetivo[]" class="w-full border rounded-md px-2 py-1 objetivo-select">
+                        <!-- Las opciones se generarán dinámicamente -->
+                    </select>
+                </td>
+                <td>
+                    <select name="tipo_producto[]" class="w-full border rounded-md px-2 py-1">
+                        <option value="">-- Seleccionar --</option>
+                        <option value="publicacion_cientifica">Publicación científica</option>
+                        <option value="patente">Patente</option>
+                        <option value="libro">Libro / Capítulo de libro</option>
+                        <option value="ponencia_congreso">Ponencia en congreso</option>
+                        <option value="tesis">Tesis</option>
+                        <option value="prototipo">Prototipo</option>
+                    </select>
+                </td>
+                <td><input type="number" name="cantidad_producto[]" min="1" value="1" class="w-full border rounded-md px-2 py-1 text-center"></td>
+                <td><button type="button" class="remove-producto-btn text-red-500 hover:text-red-700 font-bold">Eliminar</button></td>
+            `;
+            productosTableBody.appendChild(newRow);
+            updateProductoOptions(); // Actualizar las opciones de la nueva fila
+        });
+
+        // Evento para los botones de eliminar fila de productos
+        productosTableBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-producto-btn')) {
+                e.target.closest('tr').remove();
+            }
+        });
+        
+        // ---- Lógica del cronograma dinámico ----
+
+        // Función para generar las cabeceras de la tabla del cronograma
+        const generarCronogramaCabeceras = (meses) => {
+            cronogramaTableHead.innerHTML = ''; // Limpia las cabeceras existentes
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+                <th class="w-1/3">Actividad</th>
+                <th class="w-1/6">Precedencia</th>
+                <th class="w-1/6">Meta/Entregable</th>
+            `;
+            for (let i = 1; i <= meses; i++) {
+                headerRow.innerHTML += `<th>${i} Mes</th>`;
+            }
+            headerRow.innerHTML += `<th></th>`; // Botón de eliminar
+            cronogramaTableHead.appendChild(headerRow);
+        };
+
+        // Función para agregar una nueva fila al cronograma
+        const addCronogramaRow = () => {
+            const meses = parseInt(duracionProyectoSelect.value, 10);
+            if (!meses) return;
+
+            const newRow = document.createElement('tr');
+            let rowContent = `
+                <td><input type="text" name="actividad[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="precedencia[]" class="w-full border rounded-md px-2 py-1"></td>
+                <td><input type="text" name="meta_entregable[]" class="w-full border rounded-md px-2 py-1"></td>
+            `;
+            // Añadir los checkboxes para cada mes
+            for (let i = 1; i <= meses; i++) {
+                rowContent += `
+                    <td class="text-center">
+                        <input type="checkbox" name="mes_${i}[]" class="cronograma-check">
+                    </td>
+                `;
+            }
+            rowContent += `<td><button type="button" class="remove-row-btn text-red-500 hover:text-red-700 font-bold">Eliminar</button></td>`;
+            
+            newRow.innerHTML = rowContent;
+            cronogramaTableBody.appendChild(newRow);
+        };
+        
+        // ---- Lógica del presupuesto dinámico ----
+
+        const rubros = [
+            "Honorarios",
+            "Servicios",
+            "Equipos",
+            "Materiales",
+            "Accesorios y partes informáticas",
+            "Insumos informáticos",
+            "Útiles de oficina",
+            "Fotocopias, impresiones y anillados",
+            "Atención a reuniones",
+            "Alojamiento y viáticos",
+            "Viajes y movilidad",
+            "Otros gastos",
+            "Imprevistos"
+        ];
+
+        // Función para generar las cabeceras de la tabla de presupuesto
+        const generarPresupuestoCabeceras = (meses) => {
+            presupuestoTableHead.innerHTML = '';
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+                <th class="w-1/5">Rubro</th>
+                <th class="w-2/5">Concepto</th>
+            `;
+            for (let i = 1; i <= meses; i++) {
+                headerRow.innerHTML += `<th>Mes ${i} (S/)</th>`;
+            }
+            headerRow.innerHTML += `<th></th>`; // Botón de eliminar
+            presupuestoTableHead.appendChild(headerRow);
+        };
+
+        // Función para agregar una nueva fila al presupuesto
+        const addPresupuestoRow = () => {
+            const meses = parseInt(duracionProyectoSelect.value, 10);
+            if (!meses) return;
+
+            const newRow = document.createElement('tr');
+            let rowContent = `
+                <td>
+                    <select name="rubro[]" class="w-full border rounded-md px-2 py-1">
+                        <option value="">-- Seleccionar --</option>
+                        ${rubros.map(rubro => `<option value="${rubro}">${rubro}</option>`).join('')}
+                    </select>
+                </td>
+                <td><input type="text" name="concepto[]" class="w-full border rounded-md px-2 py-1"></td>
+            `;
+            for (let i = 1; i <= meses; i++) {
+                rowContent += `
+                    <td>
+                        <input type="number" step="0.01" min="0" name="monto_mes_${i}[]" class="w-full border rounded-md px-2 py-1 text-right presupuesto-monto">
+                    </td>
+                `;
+            }
+            rowContent += `<td><button type="button" class="remove-row-btn text-red-500 hover:text-red-700 font-bold">Eliminar</button></td>`;
+            
+            newRow.innerHTML = rowContent;
+            presupuestoTableBody.appendChild(newRow);
+        };
+        
+        // Función para calcular y mostrar el monto solicitado total
+        const updateMontoSolicitado = () => {
+            let total = 0;
+            const montos = document.querySelectorAll('.presupuesto-monto');
+            montos.forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+            montoSolicitadoSpan.textContent = `S/ ${total.toFixed(2)}`;
+        };
+
+        // Evento para el cambio en la duración del proyecto
+        duracionProyectoSelect.addEventListener('change', (e) => {
+            const meses = parseInt(e.target.value, 10);
+            if (meses) {
+                // Generar cabeceras y filas para ambas tablas
+                generarCronogramaCabeceras(meses);
+                cronogramaTableBody.innerHTML = '';
+                addCronogramaRow();
+                cronogramaContainer.classList.remove('hidden');
+
+                generarPresupuestoCabeceras(meses);
+                presupuestoTableBody.innerHTML = '';
+                addPresupuestoRow();
+                presupuestoContainer.classList.remove('hidden');
+
+                updateMontoSolicitado();
+            } else {
+                cronogramaContainer.classList.add('hidden');
+                presupuestoContainer.classList.add('hidden');
+            }
+        });
+
+        // Eventos para añadir filas a las tablas
+        addActividadBtn.addEventListener('click', addCronogramaRow);
+        addPresupuestoBtn.addEventListener('click', addPresupuestoRow);
+        
+        // Evento para actualizar el monto solicitado cuando hay un cambio en el presupuesto
+        presupuestoTableBody.addEventListener('input', (e) => {
+            if (e.target.classList.contains('presupuesto-monto')) {
+                updateMontoSolicitado();
+            }
+        });
+
+        // Evento para los botones de eliminar fila (usa delegación de eventos)
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-row-btn')) {
+                const row = e.target.closest('tr');
+                const parentTableId = row.closest('table').id;
+                row.remove();
+                if (parentTableId === 'presupuestoTable') {
+                    updateMontoSolicitado(); // Recalcula el monto si se elimina una fila del presupuesto
+                }
+            }
+        });
+
+        solicitudForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Simulación del envío exitoso
+            mensajeExitoDiv.classList.remove('hidden');
+            solicitudForm.reset(); // Limpiar el formulario
+            infoDocenteDiv.classList.add('hidden');
+            seccionAdjuntosSupervisorDiv.classList.add('hidden');
+            publicacionesSupervisorDiv.classList.add('hidden');
+            infoSolicitanteDiv.classList.add('hidden');
+            infoProyectoDiv.classList.add('hidden');
+            enviarBtn.classList.add('hidden');
+            resultadoValidacionP.textContent = '';
+            publicacionesTableBody.innerHTML = ''; // Limpiar la tabla de publicaciones
+            publicacionesSupervisorTableBody.innerHTML = ''; // Limpiar la tabla de publicaciones del supervisor
+            objetivosContainer.innerHTML = ''; // Limpiar la lista de objetivos específicos
+            productosTableBody.innerHTML = ''; // Limpiar la tabla de productos
+            
+            // Limpiar también las tablas dinámicas del cronograma y presupuesto
+            cronogramaContainer.classList.add('hidden');
+            cronogramaTableHead.innerHTML = '';
+            cronogramaTableBody.innerHTML = '';
+            presupuestoContainer.classList.add('hidden');
+            presupuestoTableHead.innerHTML = '';
+            presupuestoTableBody.innerHTML = '';
+            montoSolicitadoSpan.textContent = `S/ 0.00`;
+
+            // Opcional: Desplazarse al mensaje de éxito para que el usuario lo vea
+            mensajeExitoDiv.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+
+</body>
+</html>
